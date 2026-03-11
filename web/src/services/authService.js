@@ -1,6 +1,12 @@
 import axios from 'axios';
 
-const API_URL = `${process.env.REACT_APP_API_BASE_URL}/auth`;
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080/api';
+const API_URL = `${API_BASE_URL}/auth`;
+
+// Debug: Log the API URL to see if environment variable is loaded
+console.log('Environment Variable:', process.env.REACT_APP_API_BASE_URL);
+console.log('API_BASE_URL:', API_BASE_URL);
+console.log('API_URL:', API_URL);
 
 /**
  * Authentication Service
