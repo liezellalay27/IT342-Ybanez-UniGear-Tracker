@@ -2,7 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Register from './components/Register';
 import Login from './components/Login';
-import Dashboard from './components/Dashboard';
+import HomepageCatalog from './components/HomepageCatalog';
+import EquipmentDetail from './components/EquipmentDetail';
 import { isAuthenticated } from './services/authService';
 
 // Protected Route Component
@@ -21,7 +22,15 @@ function App() {
           path="/dashboard" 
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <HomepageCatalog />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/equipment/:id" 
+          element={
+            <ProtectedRoute>
+              <EquipmentDetail />
             </ProtectedRoute>
           } 
         />
