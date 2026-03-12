@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCurrentUser, logout } from '../services/authService';
 import './HomepageCatalog.css';
@@ -10,15 +10,18 @@ function HomepageCatalog() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
+  useEffect(() => {
+    // Check if user is authenticated
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login', { replace: true });
+    }
+  }, [navigate]);
+
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
-
-  if (!user) {
-    navigate('/login');
-    return null;
-  }
 
   const categories = [
     'All',
@@ -133,9 +136,9 @@ function HomepageCatalog() {
             <span className="header-title">UniGear Tracker</span>
           </div>
           <nav className="nav-links">
-            <a href="#catalog" className="nav-link active">Catalog</a>
-            <a href="#requests" className="nav-link">My Request</a>
-            <a href="#profile" className="nav-link">Profile</a>
+            <button onClick={() => navigate('/dashboard')} className="nav-link active">Catalog</button>
+            <button onClick={() => navigate('/my-requests')} className="nav-link">My Requests</button>
+            <button onClick={() => navigate('/profile')} className="nav-link">Profile</button>
             <button onClick={handleLogout} className="logout-btn">Logout</button>
           </nav>
         </div>

@@ -21,6 +21,16 @@ export const register = async (name, email, password) => {
       email,
       password
     });
+    
+    // Store user data and token in localStorage
+    if (response.data) {
+      localStorage.setItem('user', JSON.stringify(response.data));
+      // Store token separately for easier access
+      if (response.data.accessToken) {
+        localStorage.setItem('token', response.data.accessToken);
+      }
+    }
+    
     return { success: true, data: response.data };
   } catch (error) {
     return {
@@ -38,13 +48,18 @@ export const login = async (email, password) => {
       password
     });
     
-    // Store user data in localStorage
+    // Store user data and token in localStorage
     if (response.data) {
       localStorage.setItem('user', JSON.stringify(response.data));
+      // Store token separately for easier access
+      if (response.data.accessToken) {
+        localStorage.setItem('token', response.data.accessToken);
+      }
     }
     
     return { success: true, data: response.data };
   } catch (error) {
+  localStorage.removeItem('token');
     return {
       success: false,
       error: error.response?.data?.error || 'Login failed'
@@ -65,17 +80,18 @@ export const getCurrentUser = () => {
 
 // Check if user is logged in
 export const isAuthenticated = () => {
-  return !!getCurrentUser();
+  const token = localStorage.getItem('token');
+  return !!token;
 };
 
 // Google OAuth2 Login
 export const loginWithGoogle = () => {
   // Redirect to backend OAuth2 authorization endpoint (Spring Security default)
-  window.location.href = `${API_BASE_URL}/oauth2/authorization/google`;
+  // Note: OAuth2 paths are NOT under /api/
+  window.location.href = `http://localhost:8080/oauth2/authorization/google`;
 };
 
 // Get JWT token from current user
 export const getAuthToken = () => {
-  const user = getCurrentUser();
-  return user?.accessToken || null;
+  return localStorage.getItem('token');
 };
