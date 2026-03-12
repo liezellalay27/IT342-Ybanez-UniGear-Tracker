@@ -25,6 +25,8 @@ function OAuth2Callback() {
         // You can decode the token to get user info if needed
       };
       localStorage.setItem('user', JSON.stringify(userData));
+      // Store token separately for easier access
+      localStorage.setItem('token', token);
       
       // Redirect to dashboard
       navigate('/dashboard');

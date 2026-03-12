@@ -5,6 +5,8 @@ import Login from './components/Login';
 import OAuth2Callback from './components/OAuth2Callback';
 import HomepageCatalog from './components/HomepageCatalog';
 import EquipmentDetail from './components/EquipmentDetail';
+import MyRequests from './components/MyRequests';
+import Profile from './components/Profile';
 import { isAuthenticated } from './services/authService';
 
 // Protected Route Component
@@ -33,6 +35,22 @@ function App() {
           element={
             <ProtectedRoute>
               <EquipmentDetail />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/my-requests" 
+          element={
+            <ProtectedRoute>
+              <MyRequests />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/profile" 
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           } 
         />
