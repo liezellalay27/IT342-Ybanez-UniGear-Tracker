@@ -7,11 +7,38 @@ import HomepageCatalog from './components/HomepageCatalog';
 import EquipmentDetail from './components/EquipmentDetail';
 import MyRequests from './components/MyRequests';
 import Profile from './components/Profile';
-import { isAuthenticated } from './services/authService';
+import AdminDashboard from './components/Admin/AdminDashboard';
+import { getCurrentUser, isAuthenticated } from './services/authService';
 
 // Protected Route Component
 function ProtectedRoute({ children }) {
   return isAuthenticated() ? children : <Navigate to="/login" />;
+}
+
+function DashboardEntry() {
+  if (!isAuthenticated()) {
+    return <Navigate to="/login" />;
+  }
+
+  const user = getCurrentUser();
+  if (user?.role === 'ADMIN') {
+    return <Navigate to="/admin?tab=overview" replace />;
+  }
+
+  return <HomepageCatalog />;
+}
+
+function AdminRoute({ children }) {
+  if (!isAuthenticated()) {
+    return <Navigate to="/login" />;
+  }
+
+  const user = getCurrentUser();
+  if (user?.role !== 'ADMIN') {
+    return <Navigate to="/dashboard" />;
+  }
+
+  return children;
 }
 
 function App() {
@@ -25,9 +52,7 @@ function App() {
         <Route 
           path="/dashboard" 
           element={
-            <ProtectedRoute>
-              <HomepageCatalog />
-            </ProtectedRoute>
+            <DashboardEntry />
           } 
         />
         <Route 
@@ -53,6 +78,14 @@ function App() {
               <Profile />
             </ProtectedRoute>
           } 
+        />
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <AdminDashboard />
+            </AdminRoute>
+          }
         />
       </Routes>
     </Router>
