@@ -1,0 +1,172 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.unigear.tracker.mobile"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="24"
+9        android:targetSdkVersion="35" />
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:5:5-67
+11-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:5:22-64
+12
+13    <permission
+13-->[androidx.core:core:1.13.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\f1e8c3930beb4fe606f65ddd1c94cc6b\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+14        android:name="com.unigear.tracker.mobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+14-->[androidx.core:core:1.13.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\f1e8c3930beb4fe606f65ddd1c94cc6b\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+15        android:protectionLevel="signature" />
+15-->[androidx.core:core:1.13.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\f1e8c3930beb4fe606f65ddd1c94cc6b\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
+16
+17    <uses-permission android:name="com.unigear.tracker.mobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+17-->[androidx.core:core:1.13.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\f1e8c3930beb4fe606f65ddd1c94cc6b\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+17-->[androidx.core:core:1.13.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\f1e8c3930beb4fe606f65ddd1c94cc6b\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+18
+19    <application
+19-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:7:5-48:19
+20        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+20-->[androidx.core:core:1.13.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\f1e8c3930beb4fe606f65ddd1c94cc6b\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
+21        android:debuggable="true"
+22        android:extractNativeLibs="false"
+23        android:icon="@mipmap/ic_launcher"
+23-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:8:9-43
+24        android:label="@string/app_name"
+24-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:9:9-41
+25        android:roundIcon="@mipmap/ic_launcher_round"
+25-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:11:9-54
+26        android:testOnly="true"
+27        android:theme="@style/Theme.UniGearMobile"
+27-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:12:9-51
+28        android:usesCleartextTraffic="true" >
+28-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:10:9-44
+29        <activity android:name="com.unigear.tracker.mobile.LoginActivity" />
+29-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:14:9-77
+29-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:14:19-74
+30        <activity android:name="com.unigear.tracker.mobile.RegisterActivity" />
+30-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:16:9-80
+30-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:16:19-77
+31        <activity android:name="com.unigear.tracker.mobile.HomeActivity" />
+31-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:18:9-76
+31-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:18:19-73
+32        <activity android:name="com.unigear.tracker.mobile.MyRequestsActivity" />
+32-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:20:9-82
+32-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:20:19-79
+33        <activity android:name="com.unigear.tracker.mobile.EquipmentDetailActivity" />
+33-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:22:9-87
+33-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:22:19-84
+34        <activity
+34-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:24:9-38:20
+35            android:name="com.unigear.tracker.mobile.OAuth2CallbackActivity"
+35-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:25:13-77
+36            android:exported="true" >
+36-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:26:13-36
+37            <intent-filter>
+37-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:27:13-37:29
+38                <action android:name="android.intent.action.VIEW" />
+38-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:28:17-69
+38-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:28:25-66
+39
+40                <category android:name="android.intent.category.DEFAULT" />
+40-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:30:17-76
+40-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:30:27-73
+41                <category android:name="android.intent.category.BROWSABLE" />
+41-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:31:17-78
+41-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:31:27-75
+42
+43                <data
+43-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:33:17-36:48
+44                    android:host="auth"
+44-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:34:21-40
+45                    android:pathPrefix="/oauth2/callback"
+45-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:35:21-58
+46                    android:scheme="unigear" />
+46-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:36:21-45
+47            </intent-filter>
+48        </activity>
+49        <activity
+49-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:40:9-47:20
+50            android:name="com.unigear.tracker.mobile.SplashActivity"
+50-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:41:13-69
+51            android:exported="true" >
+51-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:42:13-36
+52            <intent-filter>
+52-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:43:13-46:29
+53                <action android:name="android.intent.action.MAIN" />
+53-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:44:17-69
+53-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:44:25-66
+54
+55                <category android:name="android.intent.category.LAUNCHER" />
+55-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:45:17-77
+55-->C:\Users\Liezel Ybanez\IT342_UniGear-Tracker_G4_Ybanez\mobile\app\src\main\AndroidManifest.xml:45:27-74
+56            </intent-filter>
+57        </activity>
+58
+59        <provider
+59-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\0060ccc03ccf163719264f54fb14d997\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+60            android:name="androidx.startup.InitializationProvider"
+60-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\0060ccc03ccf163719264f54fb14d997\transformed\emoji2-1.3.0\AndroidManifest.xml:25:13-67
+61            android:authorities="com.unigear.tracker.mobile.androidx-startup"
+61-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\0060ccc03ccf163719264f54fb14d997\transformed\emoji2-1.3.0\AndroidManifest.xml:26:13-68
+62            android:exported="false" >
+62-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\0060ccc03ccf163719264f54fb14d997\transformed\emoji2-1.3.0\AndroidManifest.xml:27:13-37
+63            <meta-data
+63-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\0060ccc03ccf163719264f54fb14d997\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+64                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+64-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\0060ccc03ccf163719264f54fb14d997\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+65                android:value="androidx.startup" />
+65-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\0060ccc03ccf163719264f54fb14d997\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+66            <meta-data
+66-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\0540bd285a68f68f15019fbfb7eee066\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:29:13-31:52
+67                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+67-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\0540bd285a68f68f15019fbfb7eee066\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:30:17-78
+68                android:value="androidx.startup" />
+68-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\0540bd285a68f68f15019fbfb7eee066\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:31:17-49
+69            <meta-data
+69-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+70                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+70-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+71                android:value="androidx.startup" />
+71-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+72        </provider>
+73
+74        <receiver
+74-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+75            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+75-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+76            android:directBootAware="false"
+76-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+77            android:enabled="true"
+77-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+78            android:exported="true"
+78-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+79            android:permission="android.permission.DUMP" >
+79-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+80            <intent-filter>
+80-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+81                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+81-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+81-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+82            </intent-filter>
+83            <intent-filter>
+83-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+84                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+84-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+84-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+85            </intent-filter>
+86            <intent-filter>
+86-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+87                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+87-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+87-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+88            </intent-filter>
+89            <intent-filter>
+89-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+90                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+90-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+90-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Liezel Ybanez\.gradle\caches\transforms-3\623381bc132c5d878acb36826708078c\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+91            </intent-filter>
+92        </receiver>
+93    </application>
+94
+95</manifest>
