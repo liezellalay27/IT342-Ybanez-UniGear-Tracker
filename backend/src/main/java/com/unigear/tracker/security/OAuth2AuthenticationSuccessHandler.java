@@ -1,10 +1,9 @@
 package com.unigear.tracker.security;
 
 import com.unigear.tracker.dto.AuthResponse;
-import com.unigear.tracker.entity.User;
-import com.unigear.tracker.repository.UserRepository;
 import com.unigear.tracker.service.AuthService;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +17,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
 @Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Autowired
     private AuthService authService;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Value("${app.oauth2.authorizedRedirectUri:http://localhost:3000}")
     private String redirectUri;
@@ -41,18 +33,40 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                                         Authentication authentication) throws IOException, ServletException {
 
         Object principal = authentication.getPrincipal();
+        String targetRedirectUri = resolveRedirectUri(request);
         if (!(principal instanceof OAuth2User oAuth2User)) {
-            response.sendRedirect(redirectUri + "/oauth2/callback?error=oauth2_principal_invalid");
+            response.sendRedirect(targetRedirectUri + "/oauth2/callback?error=oauth2_principal_invalid");
             return;
         }
 
         try {
             AuthResponse authResponse = authService.authenticateWithGoogleOAuth2User(oAuth2User);
             String encodedToken = URLEncoder.encode(authResponse.getAccessToken(), StandardCharsets.UTF_8);
-            response.sendRedirect(redirectUri + "/oauth2/callback?token=" + encodedToken);
+            response.sendRedirect(targetRedirectUri + "/oauth2/callback?token=" + encodedToken);
         } catch (IllegalArgumentException ex) {
             String encodedMessage = URLEncoder.encode(ex.getMessage(), StandardCharsets.UTF_8);
-            response.sendRedirect(redirectUri + "/oauth2/callback?error=" + encodedMessage);
+            response.sendRedirect(targetRedirectUri + "/oauth2/callback?error=" + encodedMessage);
+        } finally {
+            clearRedirectUriCookie(response);
         }
+    }
+
+    private String resolveRedirectUri(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("oauth2_redirect_uri".equals(cookie.getName()) && cookie.getValue() != null && !cookie.getValue().isBlank()) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return redirectUri;
+    }
+
+    private void clearRedirectUriCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie("oauth2_redirect_uri", "");
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
     }
 }
