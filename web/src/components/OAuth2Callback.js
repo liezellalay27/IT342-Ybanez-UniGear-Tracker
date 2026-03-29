@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Auth.css';
 
+const API_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080/api';
+
 function OAuth2Callback() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -19,17 +21,43 @@ function OAuth2Callback() {
         navigate('/login');
       }, 3000);
     } else if (token) {
-      // Store the JWT token
-      const userData = {
-        accessToken: token,
-        // You can decode the token to get user info if needed
+      const syncProfileAndRedirect = async () => {
+        try {
+          localStorage.setItem('token', token);
+
+          const response = await fetch(`${API_URL}/profile`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+
+          if (response.ok) {
+            const profile = await response.json();
+            localStorage.setItem('user', JSON.stringify({
+              id: profile.id,
+              name: profile.name,
+              email: profile.email,
+              role: profile.role,
+              picture: profile.picture || '',
+              accessToken: token
+            }));
+
+            if (profile.role === 'ADMIN') {
+              navigate('/admin?tab=overview');
+            } else {
+              navigate('/dashboard');
+            }
+          } else {
+            localStorage.setItem('user', JSON.stringify({ accessToken: token }));
+            navigate('/dashboard');
+          }
+        } catch (err) {
+          localStorage.setItem('user', JSON.stringify({ accessToken: token }));
+          navigate('/dashboard');
+        }
       };
-      localStorage.setItem('user', JSON.stringify(userData));
-      // Store token separately for easier access
-      localStorage.setItem('token', token);
-      
-      // Redirect to dashboard
-      navigate('/dashboard');
+
+      syncProfileAndRedirect();
     } else {
       setError('Authentication failed. No token received.');
       setTimeout(() => {

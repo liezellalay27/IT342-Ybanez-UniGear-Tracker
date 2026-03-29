@@ -677,6 +677,34 @@
   font-weight: 600;
 }
 
+.return-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.return-badge.on-time {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.return-badge.late {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.return-badge.unknown {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
 .request-footer {
   display: flex;
   justify-content: space-between;
@@ -726,6 +754,81 @@
   color: white;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+}
+
+/* File Input Styling */
+.file-input {
+  padding: 12px 14px;
+  border: 2px dashed #EFBF04;
+  border-radius: 10px;
+  background: #fef9e7;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.file-input:hover {
+  border-color: #d4a005;
+  background: #fef4cc;
+}
+
+.file-input:focus {
+  outline: none;
+  border-color: #550000;
+  background: #fef9e7;
+}
+
+.form-label-hint {
+  font-size: 13px;
+  color: #666;
+  margin: 4px 0 8px 0;
+}
+
+.file-selected {
+  font-size: 13px;
+  color: #27ae60;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #d4edda;
+  border-radius: 6px;
+  border: 1px solid #27ae60;
+}
+
+/* Download PDF Button */
+.btn-download-pdf {
+  background: #2196F3;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.btn-download-pdf::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: #1976D2;
+  transition: left 0.3s;
+  z-index: -1;
+}
+
+.btn-download-pdf:hover::before {
+  left: 0;
+}
+
+.btn-download-pdf:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(33, 150, 243, 0.4);
 }
 
 /* Empty State */

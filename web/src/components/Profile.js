@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import UserProfilePanel from './Users/UserProfilePanel';
 import './Profile.css';
 import logo from '../assets/UniGear Symbol.png';
 
@@ -19,62 +20,45 @@ function Profile() {
   });
 
   useEffect(() => {
-    // Check if user is logged in
-    const token = localStorage.getItem('token');
-    console.log('Profile useEffect - Token exists:', !!token);
-    console.log('Profile useEffect - Token value:', token ? token.substring(0, 20) + '...' : 'null');
-    
-    if (!token) {
-      console.log('No token found, redirecting to login');
-      navigate('/login', { replace: true });
-      return;
-    }
-    
-    console.log('Token found, fetching profile...');
-    fetchProfile();
-  }, []);
-
-  const fetchProfile = async () => {
-    try {
+    const loadProfile = async () => {
       const token = localStorage.getItem('token');
-      console.log('fetchProfile - Token exists:', !!token);
-      console.log('fetchProfile - API URL:', `${API_URL}/profile`);
-      
-      const response = await fetch(`${API_URL}/profile`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      console.log('fetchProfile - Response status:', response.status);
-      
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Profile data:', data);
-        setProfile(data);
-        setFormData({
-          name: data.name,
-          picture: data.picture || ''
-        });
-      } else if (response.status === 401) {
-        // Unauthorized - token is invalid or expired
-        console.error('Unauthorized - invalid token. Clearing storage and redirecting to login...');
-        localStorage.clear(); // Clear all localStorage
+
+      if (!token) {
         navigate('/login', { replace: true });
         return;
-      } else {
-        const errorText = await response.text();
-        console.error('Profile fetch error:', response.status, errorText);
-        setError(`Failed to fetch profile (${response.status}): ${errorText}`);
       }
-    } catch (err) {
-      console.error('Profile fetch error:', err);
-      setError('Error connecting to server: ' + err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+
+      try {
+        const response = await fetch(`${API_URL}/profile`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setProfile(data);
+          setFormData({
+            name: data.name,
+            picture: data.picture || ''
+          });
+        } else if (response.status === 401) {
+          localStorage.clear();
+          navigate('/login', { replace: true });
+        } else {
+          const errorText = await response.text();
+          setError(`Failed to fetch profile (${response.status}): ${errorText}`);
+        }
+      } catch (err) {
+        setError(`Error connecting to server: ${err.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProfile();
+  }, [navigate]);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -192,7 +176,16 @@ function Profile() {
           </div>
           <div className="nav-links">
             <button onClick={() => navigate('/dashboard')} className="nav-link">Dashboard</button>
-            <button onClick={() => navigate('/my-requests')} className="nav-link">My Requests</button>
+            {profile.role === 'ADMIN' ? (
+              <>
+                <button onClick={() => navigate('/admin?tab=equipment')} className="nav-link">Equipment</button>
+                <button onClick={() => navigate('/admin?tab=users')} className="nav-link">Users</button>
+                <button onClick={() => navigate('/admin?tab=borrowed')} className="nav-link">Borrowed</button>
+                <button onClick={() => navigate('/admin?tab=requests')} className="nav-link">Requests</button>
+              </>
+            ) : (
+              <button onClick={() => navigate('/my-requests')} className="nav-link">My Requests</button>
+            )}
             <button onClick={() => navigate('/profile')} className="nav-link active">Profile</button>
             <button onClick={handleLogout} className="logout-btn">Logout</button>
           </div>
@@ -200,169 +193,18 @@ function Profile() {
       </header>
 
       <div className="content">
-        <div className="profile-card">
-          <h1>My Profile</h1>
-          
-          {error && <div className="error-message">{error}</div>}
-          {success && <div className="success-message">{success}</div>}
-
-          <div className="profile-picture-section">
-            <div className="profile-picture">
-              {profile.picture ? (
-                <img src={profile.picture} alt={profile.name} />
-              ) : (
-                <div className="profile-initials">
-                  {profile.name.charAt(0).toUpperCase()}
-                </div>
-              )}
-            </div>
-            {!editing && (
-              <button onClick={() => setEditing(true)} className="change-picture-btn">
-                Change Picture
-              </button>
-            )}
-          </div>
-
-          {!editing ? (
-            <div className="profile-info">
-              <div className="info-row">
-                <label>Name:</label>
-                <span>{profile.name}</span>
-              </div>
-              <div className="info-row">
-                <label>Email:</label>
-                <span>{profile.email}</span>
-              </div>
-              <div className="info-row">
-                <label>Member Since:</label>
-                <span>{new Date(profile.createdAt).toLocaleDateString()}</span>
-              </div>
-              
-              <button onClick={() => setEditing(true)} className="btn-primary">
-                Edit Profile
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="edit-form">
-              <div className="form-group">
-                <label>Name *</label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  required
-                />
-              </div>
-              
-              <div className="form-group">
-                <label>Email</label>
-                <input
-                  type="email"
-                  value={profile.email}
-                  disabled
-                  className="disabled-input"
-                />
-                <small>Email cannot be changed</small>
-              </div>
-              
-              <div className="form-group">
-                <label>Profile Picture</label>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    id="picture-upload"
-                    style={{ display: 'none' }}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => document.getElementById('picture-upload').click()}
-                    style={{
-                      background: '#EFBF04',
-                      color: '#550000',
-                      border: 'none',
-                      padding: '12px 24px',
-                      borderRadius: '25px',
-                      fontSize: '15px',
-                      fontWeight: '600',
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                      alignSelf: 'flex-start'
-                    }}
-                    onMouseOver={(e) => {
-                      e.target.style.background = '#550000';
-                      e.target.style.color = '#EFBF04';
-                    }}
-                    onMouseOut={(e) => {
-                      e.target.style.background = '#EFBF04';
-                      e.target.style.color = '#550000';
-                    }}
-                  >
-                    📷 Choose Image
-                  </button>
-                  <small style={{ color: '#666' }}>Select an image from your computer (max 2MB)</small>
-                  
-                  {/* Picture Preview */}
-                  {formData.picture && (
-                    <div style={{ marginTop: '10px', textAlign: 'center' }}>
-                      <p style={{ marginBottom: '10px', fontWeight: '600', color: '#550000' }}>Preview:</p>
-                      <div style={{ 
-                        width: '120px', 
-                        height: '120px', 
-                        border: '3px solid #EFBF04', 
-                        borderRadius: '50%', 
-                        overflow: 'hidden',
-                        margin: '0 auto',
-                        boxShadow: '0 4px 12px rgba(239, 191, 4, 0.3)'
-                      }}>
-                        <img 
-                          src={formData.picture} 
-                          alt="Preview" 
-                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                        />
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => setFormData({...formData, picture: ''})}
-                        style={{
-                          marginTop: '10px',
-                          background: 'transparent',
-                          color: '#d32f2f',
-                          border: '1px solid #d32f2f',
-                          padding: '6px 16px',
-                          borderRadius: '15px',
-                          fontSize: '13px',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        Remove Picture
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-              
-              <div className="button-group">
-                <button type="submit" className="btn-submit">Save Changes</button>
-                <button 
-                  type="button" 
-                  onClick={() => {
-                    setEditing(false);
-                    setFormData({
-                      name: profile.name,
-                      picture: profile.picture || ''
-                    });
-                    setError('');
-                  }} 
-                  className="btn-cancel"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          )}
-        </div>
+        <UserProfilePanel
+          profile={profile}
+          editing={editing}
+          formData={formData}
+          error={error}
+          success={success}
+          setEditing={setEditing}
+          setFormData={setFormData}
+          setError={setError}
+          handleImageUpload={handleImageUpload}
+          handleSubmit={handleSubmit}
+        />
       </div>
     </div>
   );
