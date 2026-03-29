@@ -4,6 +4,8 @@ import com.unigear.tracker.dto.AuthResponse;
 import com.unigear.tracker.dto.LoginRequest;
 import com.unigear.tracker.dto.RegisterRequest;
 import com.unigear.tracker.service.AuthService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,6 +55,23 @@ public class AuthController {
             error.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
         }
+    }
+
+    /**
+     * GET /api/auth/mobile/google
+     * Starts Google OAuth2 flow for mobile app and stores redirect URI in a short-lived cookie.
+     */
+    @GetMapping("/mobile/google")
+    public void startMobileGoogleOAuth(
+            @RequestParam(name = "redirect_uri", defaultValue = "unigear://auth") String redirectUri,
+            HttpServletResponse response
+    ) throws java.io.IOException {
+        Cookie cookie = new Cookie("oauth2_redirect_uri", redirectUri);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(180);
+        response.addCookie(cookie);
+        response.sendRedirect("/oauth2/authorization/google");
     }
     
     /**
