@@ -4,18 +4,57 @@ import { getCurrentUser, logout } from '../services/authService';
 import './HomepageCatalog.css';
 import logo from '../assets/UniGear Symbol.png';
 
+const API_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080/api';
+
 function HomepageCatalog() {
   const navigate = useNavigate();
-  const user = getCurrentUser();
+  const currentUser = getCurrentUser();
+  const isAdmin = currentUser?.role === 'ADMIN';
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [equipment, setEquipment] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    // Check if user is authenticated
-    const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/login', { replace: true });
-    }
+    const loadEquipment = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        navigate('/login', { replace: true });
+        return;
+      }
+
+      setLoading(true);
+      setError('');
+
+      try {
+        const response = await fetch(`${API_URL}/equipment`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        if (response.status === 401) {
+          logout();
+          navigate('/login', { replace: true });
+          return;
+        }
+
+        if (!response.ok) {
+          const message = await response.text();
+          throw new Error(message || 'Failed to load equipment');
+        }
+
+        const data = await response.json();
+        setEquipment(Array.isArray(data) ? data : []);
+      } catch (err) {
+        setError(err.message || 'Error connecting to server');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadEquipment();
   }, [navigate]);
 
   const handleLogout = () => {
@@ -25,97 +64,15 @@ function HomepageCatalog() {
 
   const categories = [
     'All',
-    'Microscopes',
-    'Glassware',
-    'Electronics',
-    'Safety Equipment',
-    'Chemicals'
+    ...Array.from(new Set(equipment.map((item) => item.category))).sort((a, b) => a.localeCompare(b))
   ];
 
-  // Sample equipment data (this will be replaced with actual data later)
-  const equipment = [
-    { 
-      id: 1, 
-      name: 'Microscope', 
-      category: 'Microscopes', 
-      status: 'Available',
-      location: 'UniGear Office - Main Lobby',
-      description: 'High-quality compound microscope suitable for biological research and laboratory work.',
-      specifications: ['Magnification: 40x-1000x', 'LED illumination system']
-    },
-    { 
-      id: 2, 
-      name: 'Beaker Set', 
-      category: 'Glassware', 
-      status: 'Available',
-      location: 'Chemistry Lab - Storage Room',
-      description: 'Complete set of laboratory beakers in various sizes.',
-      specifications: ['Sizes: 50ml, 100ml, 250ml, 500ml, 1000ml', 'Borosilicate glass']
-    },
-    { 
-      id: 3, 
-      name: 'Oscilloscope', 
-      category: 'Electronics', 
-      status: 'In Use',
-      location: 'Electronics Lab - Workbench 3',
-      description: 'Digital storage oscilloscope for measuring electronic signals.',
-      specifications: ['Bandwidth: 100 MHz', '4 analog channels']
-    },
-    { 
-      id: 4, 
-      name: 'Lab Coat', 
-      category: 'Safety Equipment', 
-      status: 'Available',
-      location: 'Safety Equipment Storage',
-      description: 'Standard laboratory coat for personal protection.',
-      specifications: ['Size: Large', '100% cotton fabric']
-    },
-    { 
-      id: 5, 
-      name: 'Test Tubes', 
-      category: 'Glassware', 
-      status: 'Available',
-      location: 'Chemistry Lab - Storage Room',
-      description: 'Set of 50 borosilicate glass test tubes.',
-      specifications: ['Quantity: 50 pieces', 'Size: 18mm x 150mm']
-    },
-    { 
-      id: 6, 
-      name: 'Digital Multimeter', 
-      category: 'Electronics', 
-      status: 'Available',
-      location: 'Electronics Lab - Tool Cabinet',
-      description: 'Professional digital multimeter for accurate measurements.',
-      specifications: ['AC/DC Voltage: 0-1000V', 'Auto-ranging']
-    },
-    { 
-      id: 7, 
-      name: 'Safety Goggles', 
-      category: 'Safety Equipment', 
-      status: 'Available',
-      location: 'Safety Equipment Storage',
-      description: 'Impact-resistant safety goggles with anti-fog coating.',
-      specifications: ['Polycarbonate lenses', 'UV protection']
-    },
-    { 
-      id: 8, 
-      name: 'Compound Microscope', 
-      category: 'Microscopes', 
-      status: 'In Use',
-      location: 'Biology Lab - Station 5',
-      description: 'Advanced compound microscope with phase contrast.',
-      specifications: ['Magnification: 40x-2000x', 'Phase contrast capability']
-    },
-    { 
-      id: 9, 
-      name: 'Flask Set', 
-      category: 'Glassware', 
-      status: 'Available',
-      location: 'Chemistry Lab - Storage Room',
-      description: 'Erlenmeyer flask set in multiple sizes.',
-      specifications: ['Sizes: 125ml, 250ml, 500ml, 1000ml', 'Heat resistant']
-    },
-  ];
+  const toDisplayStatus = (status) => {
+    if (!status) {
+      return 'Unknown';
+    }
+    return status.replace('_', ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+  };
 
   // Filter equipment based on search query and selected category
   const filteredEquipment = equipment.filter((item) => {
@@ -125,6 +82,10 @@ function HomepageCatalog() {
                            item.category.toLowerCase() === selectedCategory.toLowerCase();
     return matchesSearch && matchesCategory;
   });
+
+  if (loading) {
+    return <div className="loading">Loading equipment...</div>;
+  }
 
   return (
     <div className="homepage-container">
@@ -137,8 +98,20 @@ function HomepageCatalog() {
           </div>
           <nav className="nav-links">
             <button onClick={() => navigate('/dashboard')} className="nav-link active">Catalog</button>
-            <button onClick={() => navigate('/my-requests')} className="nav-link">My Requests</button>
-            <button onClick={() => navigate('/profile')} className="nav-link">Profile</button>
+            {isAdmin ? (
+              <>
+                <button onClick={() => navigate('/admin?tab=equipment')} className="nav-link">Equipment</button>
+                <button onClick={() => navigate('/admin?tab=users')} className="nav-link">Users</button>
+                <button onClick={() => navigate('/admin?tab=borrowed')} className="nav-link">Borrowed</button>
+                <button onClick={() => navigate('/admin?tab=requests')} className="nav-link">Requests</button>
+                <button onClick={() => navigate('/profile')} className="nav-link">Profile</button>
+              </>
+            ) : (
+              <>
+                <button onClick={() => navigate('/my-requests')} className="nav-link">My Requests</button>
+                <button onClick={() => navigate('/profile')} className="nav-link">Profile</button>
+              </>
+            )}
             <button onClick={handleLogout} className="logout-btn">Logout</button>
           </nav>
         </div>
@@ -170,9 +143,9 @@ function HomepageCatalog() {
 
             {/* Quick Action Buttons */}
             <div className="quick-actions">
-              <button className="action-btn">Browse Equipment</button>
-              <button className="action-btn">My Requests</button>
-              <button className="action-btn">Request History</button>
+              <button className="action-btn" onClick={() => window.scrollTo({ top: 420, behavior: 'smooth' })}>Browse Equipment</button>
+              <button className="action-btn" onClick={() => navigate('/my-requests')}>My Requests</button>
+              <button className="action-btn" onClick={() => navigate('/my-requests')}>Request History</button>
             </div>
           </div>
           
@@ -184,6 +157,8 @@ function HomepageCatalog() {
 
       {/* Main Content */}
       <main className="catalog-main">
+        {error && <div className="error-message">{error}</div>}
+
         {/* Category Filter */}
         <div className="filter-section">
           <div className="filter-header">
@@ -222,8 +197,8 @@ function HomepageCatalog() {
                 <div className="equipment-info">
                   <h3 className="equipment-name">{item.name}</h3>
                   <p className="equipment-category">{item.category}</p>
-                  <span className={`equipment-status ${item.status === 'Available' ? 'available' : 'in-use'}`}>
-                    {item.status}
+                  <span className={`equipment-status ${item.status === 'AVAILABLE' ? 'available' : 'in-use'}`}>
+                    {toDisplayStatus(item.status)}
                   </span>
                 </div>
               </div>

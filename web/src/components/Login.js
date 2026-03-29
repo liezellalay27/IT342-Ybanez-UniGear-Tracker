@@ -65,8 +65,12 @@ function Login() {
     setLoading(false);
 
     if (result.success) {
-      // Redirect to dashboard
-      navigate('/dashboard');
+      const role = result.data?.role;
+      if (role === 'ADMIN') {
+        navigate('/admin?tab=overview');
+      } else {
+        navigate('/dashboard');
+      }
     } else {
       setErrors({ general: result.error });
     }
