@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,34 +23,11 @@ public class RequestController {
     
     @PostMapping
     public ResponseEntity<?> createRequest(
-            @RequestParam String equipmentName,
-            @RequestParam String category,
-            @RequestParam(required = false) String description,
-            @RequestParam Integer quantity,
-            @RequestParam String borrowDate,
-            @RequestParam String returnDate,
-            @RequestParam String studentName,
-            @RequestParam String schoolIdNumber,
-            @RequestParam String yearLevel,
-            @RequestParam String course,
-            @RequestParam(required = false) MultipartFile eventApprovalPdf,
+            @Valid @RequestBody CreateRequestDto dto,
             Authentication authentication) {
         try {
             String email = getUserEmail(authentication);
-            EquipmentRequestDto request = requestService.createRequest(
-                email, 
-                equipmentName, 
-                category, 
-                description, 
-                quantity, 
-                borrowDate, 
-                returnDate, 
-                studentName,
-                schoolIdNumber,
-                yearLevel,
-                course,
-                eventApprovalPdf
-            );
+            EquipmentRequestDto request = requestService.createRequest(email, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(request);
         } catch (Exception e) {
             return buildErrorResponse(e);
