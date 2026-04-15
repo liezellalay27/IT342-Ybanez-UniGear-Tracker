@@ -960,6 +960,9 @@
     <color name="tooltip_background_dark">#e6616161</color>
     <color name="tooltip_background_light">#e6FFFFFF</color>
     <color name="ug_gold">#EFBF04</color>
+    <color name="ug_gold_accent">#FFD700</color>
+    <color name="ug_gold_dark">#D4A60A</color>
+    <color name="ug_gold_light">#F5D76E</color>
     <color name="ug_maroon">#550000</color>
     <color name="ug_maroon_dark">#3D0000</color>
     <color name="ug_near_black">#222222</color>

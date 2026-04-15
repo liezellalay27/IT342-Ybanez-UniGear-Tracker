@@ -1,5 +1,9 @@
 [
     {
+        "merged": "com.unigear.tracker.mobile.app-debug-31:/drawable_button_background.xml.flat",
+        "source": "com.unigear.tracker.mobile.app-main-33:/drawable/button_background.xml"
+    },
+    {
         "merged": "com.unigear.tracker.mobile.app-debug-31:/drawable_unigear_symbol.png.flat",
         "source": "com.unigear.tracker.mobile.app-main-33:/drawable/unigear_symbol.png"
     },
@@ -64,6 +68,10 @@
         "source": "com.unigear.tracker.mobile.app-main-33:/layout/item_request_card.xml"
     },
     {
+        "merged": "com.unigear.tracker.mobile.app-debug-31:/layout_activity_profile.xml.flat",
+        "source": "com.unigear.tracker.mobile.app-main-33:/layout/activity_profile.xml"
+    },
+    {
         "merged": "com.unigear.tracker.mobile.app-debug-31:/drawable_home_chip_inactive.xml.flat",
         "source": "com.unigear.tracker.mobile.app-main-33:/drawable/home_chip_inactive.xml"
     },
@@ -126,5 +134,9 @@
     {
         "merged": "com.unigear.tracker.mobile.app-debug-31:/drawable_home_search_bg.xml.flat",
         "source": "com.unigear.tracker.mobile.app-main-33:/drawable/home_search_bg.xml"
+    },
+    {
+        "merged": "com.unigear.tracker.mobile.app-debug-31:/drawable_profile_picture_placeholder.xml.flat",
+        "source": "com.unigear.tracker.mobile.app-main-33:/drawable/profile_picture_placeholder.xml"
     }
 ]

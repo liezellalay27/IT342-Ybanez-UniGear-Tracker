@@ -59,7 +59,7 @@ class EquipmentDetailActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.btnNavProfile).setOnClickListener {
-            Toast.makeText(this, "Profile screen is coming soon", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
     }
 }

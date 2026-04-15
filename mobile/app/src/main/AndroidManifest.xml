@@ -3,6 +3,9 @@
     package="com.unigear.tracker.mobile">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:icon="@mipmap/ic_launcher"
@@ -20,6 +23,8 @@
         <activity android:name="com.unigear.tracker.mobile.MyRequestsActivity" />
 
         <activity android:name="com.unigear.tracker.mobile.EquipmentDetailActivity" />
+
+        <activity android:name="com.unigear.tracker.mobile.ProfileActivity" />
 
         <activity
             android:name="com.unigear.tracker.mobile.OAuth2CallbackActivity"
