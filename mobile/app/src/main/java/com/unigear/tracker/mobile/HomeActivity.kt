@@ -14,100 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 class HomeActivity : AppCompatActivity() {
 
-    private data class EquipmentItem(
-        val id: Int,
-        val name: String,
-        val category: String,
-        val status: String,
-        val location: String,
-        val description: String,
-        val specs: String
-    )
-
-    private val equipment = listOf(
-        EquipmentItem(
-            1,
-            "Microscope",
-            "Microscopes",
-            "Available",
-            "UniGear Office - Main Lobby",
-            "High-quality compound microscope for biology and lab sessions.",
-            "Magnification: 40x-1000x, LED illumination"
-        ),
-        EquipmentItem(
-            2,
-            "Beaker Set",
-            "Glassware",
-            "Available",
-            "Chemistry Lab - Storage Room",
-            "Borosilicate beaker set for chemistry experiments.",
-            "50ml, 100ml, 250ml, 500ml, 1000ml"
-        ),
-        EquipmentItem(
-            3,
-            "Oscilloscope",
-            "Electronics",
-            "In Use",
-            "Electronics Lab - Workbench 3",
-            "Digital storage oscilloscope for signal analysis.",
-            "Bandwidth: 100MHz, 4 channels"
-        ),
-        EquipmentItem(
-            4,
-            "Lab Coat",
-            "Safety Equipment",
-            "Available",
-            "Safety Equipment Storage",
-            "Standard laboratory coat for protection.",
-            "Size: L, Cotton"
-        ),
-        EquipmentItem(
-            5,
-            "Test Tubes",
-            "Glassware",
-            "Available",
-            "Chemistry Lab - Storage Room",
-            "Set of borosilicate glass test tubes.",
-            "50 pieces, 18mm x 150mm"
-        ),
-        EquipmentItem(
-            6,
-            "Digital Multimeter",
-            "Electronics",
-            "Available",
-            "Electronics Lab - Tool Cabinet",
-            "Professional multimeter for electrical measurements.",
-            "AC/DC Voltage, Auto-ranging"
-        ),
-        EquipmentItem(
-            7,
-            "Safety Goggles",
-            "Safety Equipment",
-            "Available",
-            "Safety Equipment Storage",
-            "Impact-resistant goggles with anti-fog coating.",
-            "Polycarbonate lens, UV protection"
-        ),
-        EquipmentItem(
-            8,
-            "Compound Microscope",
-            "Microscopes",
-            "In Use",
-            "Biology Lab - Station 5",
-            "Advanced microscope for academic research.",
-            "40x-2000x, phase contrast"
-        ),
-        EquipmentItem(
-            9,
-            "Hydrochloric Acid",
-            "Chemicals",
-            "Available",
-            "Chemistry Lab - Chemical Cabinet",
-            "Laboratory reagent for controlled chemistry procedures.",
-            "Concentration: 1M, volume: 500ml"
-        )
-    )
-
+    private var equipment = mutableListOf<EquipmentItem>()
     private var selectedCategory = "all"
     private lateinit var searchInput: EditText
     private lateinit var listContainer: LinearLayout
@@ -140,13 +47,29 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, MyRequestsActivity::class.java))
         }
         findViewById<View>(R.id.btnNavProfile).setOnClickListener {
-            Toast.makeText(this, "Profile screen is coming soon", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
 
         setupCategoryFilters()
         setupSearch()
         updateCategoryStyles()
-        renderEquipment()
+        fetchEquipment()
+    }
+
+    private fun fetchEquipment() {
+        Thread {
+            val result = AuthApiClient.getEquipment()
+            runOnUiThread {
+                if (result.success) {
+                    equipment = result.equipment.toMutableList()
+                    renderEquipment()
+                } else {
+                    noResultsText.text = "Failed to load equipment: ${result.message}"
+                    noResultsText.visibility = TextView.VISIBLE
+                    listContainer.removeAllViews()
+                }
+            }
+        }.start()
     }
 
     private fun setupSearch() {
@@ -223,8 +146,9 @@ class HomeActivity : AppCompatActivity() {
             card.findViewById<TextView>(R.id.tvEquipmentLocation).text = item.location
 
             val statusText = card.findViewById<TextView>(R.id.tvEquipmentStatus)
-            statusText.text = item.status
-            if (item.status == "Available") {
+            val status = if (item.availableQuantity > 0) "Available" else "In Use"
+            statusText.text = status
+            if (status == "Available") {
                 statusText.setBackgroundResource(R.drawable.status_available_bg)
                 statusText.setTextColor(getColor(R.color.status_available_text))
             } else {
@@ -234,13 +158,13 @@ class HomeActivity : AppCompatActivity() {
 
             card.setOnClickListener {
                 val intent = Intent(this, EquipmentDetailActivity::class.java)
-                intent.putExtra("equipment_id", item.id)
+                intent.putExtra("equipment_id", item.id.toInt())
                 intent.putExtra("equipment_name", item.name)
                 intent.putExtra("equipment_category", item.category)
-                intent.putExtra("equipment_status", item.status)
+                intent.putExtra("equipment_status", status)
                 intent.putExtra("equipment_location", item.location)
                 intent.putExtra("equipment_description", item.description)
-                intent.putExtra("equipment_specs", item.specs)
+                intent.putExtra("equipment_specs", "${item.condition} - Qty: ${item.totalQuantity}")
                 startActivity(intent)
             }
 

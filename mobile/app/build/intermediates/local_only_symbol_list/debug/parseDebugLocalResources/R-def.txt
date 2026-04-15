@@ -3,6 +3,9 @@ local
 color status_available_text
 color status_inuse_text
 color ug_gold
+color ug_gold_accent
+color ug_gold_dark
+color ug_gold_light
 color ug_maroon
 color ug_maroon_dark
 color ug_near_black
@@ -14,6 +17,7 @@ drawable auth_input_bg
 drawable auth_primary_button
 drawable auth_success_bg
 drawable bg_gold_gradient
+drawable button_background
 drawable home_card_shell
 drawable home_chip_active
 drawable home_chip_inactive
@@ -24,6 +28,7 @@ drawable ic_filter_outline
 drawable ic_google_logo
 drawable ic_launcher
 drawable logo_badge
+drawable profile_picture_placeholder
 drawable splash_card_bg
 drawable splash_logo_glow
 drawable status_available_bg
@@ -31,6 +36,10 @@ drawable status_inuse_bg
 drawable unigear_symbol
 drawable unigear_symbol_and_name
 id bottomNav
+id btnAdminBorrowed
+id btnAdminEquipment
+id btnAdminRequests
+id btnAdminUsers
 id btnBackToCatalog
 id btnCatAll
 id btnCatChemicals
@@ -38,10 +47,13 @@ id btnCatElectronics
 id btnCatGlassware
 id btnCatMicroscopes
 id btnCatSafety
+id btnChangeProfilePicture
 id btnCreateAccount
 id btnDeleteRequest
+id btnEditName
 id btnGoogleLogin
 id btnLogin
+id btnLogout
 id btnNavCatalog
 id btnNavProfile
 id btnNavRequests
@@ -61,6 +73,8 @@ id etRequestEquipmentName
 id etRequestQuantity
 id etSearch
 id ivBranding
+id ivProfilePicture
+id llAdminMenu
 id llEquipmentList
 id llRequestList
 id requestFormContainer
@@ -87,6 +101,12 @@ id tvLoginError
 id tvNoRequests
 id tvNoResults
 id tvPendingCount
+id tvProfileEmail
+id tvProfileInitials
+id tvProfileJoinDate
+id tvProfileLoading
+id tvProfileName
+id tvProfileRole
 id tvRegisterError
 id tvRegisterSuccess
 id tvRequestCategory
@@ -102,6 +122,7 @@ layout activity_equipment_detail
 layout activity_home
 layout activity_login
 layout activity_my_requests
+layout activity_profile
 layout activity_register
 layout activity_splash
 layout item_equipment_card
