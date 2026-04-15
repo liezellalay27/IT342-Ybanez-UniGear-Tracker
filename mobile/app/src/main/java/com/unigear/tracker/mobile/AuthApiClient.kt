@@ -32,6 +32,39 @@ data class RequestApiResult(
     val requests: List<RequestItem> = emptyList()
 )
 
+data class EquipmentItem(
+    val id: Long,
+    val name: String,
+    val category: String,
+    val description: String,
+    val availableQuantity: Int,
+    val totalQuantity: Int,
+    val location: String,
+    val condition: String,
+    val createdAt: String
+)
+
+data class EquipmentApiResult(
+    val success: Boolean,
+    val message: String,
+    val equipment: List<EquipmentItem> = emptyList()
+)
+
+data class UserProfile(
+    val id: Long,
+    val name: String,
+    val email: String,
+    val role: String? = "USER",
+    val profilePictureUrl: String? = null,
+    val createdAt: String? = null
+)
+
+data class UserProfileResult(
+    val success: Boolean,
+    val message: String,
+    val user: UserProfile? = null
+)
+
 object AuthApiClient {
 
     const val DEFAULT_BACKEND_BASE_URL = "http://10.0.2.2:8080"
@@ -45,6 +78,9 @@ object AuthApiClient {
 
     private val requestsBaseUrl: String
         get() = "$backendBaseUrl/api/requests"
+
+    private val equipmentBaseUrl: String
+        get() = "$backendBaseUrl/api/equipment"
 
     fun setBackendBaseUrl(url: String?) {
         val sanitized = url?.trim()?.removeSuffix("/")
@@ -179,6 +215,147 @@ object AuthApiClient {
         } finally {
             connection?.disconnect()
         }
+    }
+
+    fun getEquipment(): EquipmentApiResult {
+        var connection: HttpURLConnection? = null
+        return try {
+            connection = (URL(equipmentBaseUrl).openConnection() as HttpURLConnection).apply {
+                requestMethod = "GET"
+                setRequestProperty("Accept", "application/json")
+                connectTimeout = 15000
+                readTimeout = 15000
+            }
+
+            val statusCode = connection.responseCode
+            val body = readResponseBody(connection, statusCode)
+
+            if (statusCode in 200..299) {
+                try {
+                    val json = JSONObject(body)
+                    val success = json.optBoolean("success", true)
+                    val message = json.optString("message", "Success")
+                    
+                    val equipmentArray = json.optJSONArray("equipment") ?: json.optJSONArray("data")
+                    val equipment = mutableListOf<EquipmentItem>()
+                    
+                    if (equipmentArray != null) {
+                        for (i in 0 until equipmentArray.length()) {
+                            val item = equipmentArray.getJSONObject(i)
+                            equipment.add(EquipmentItem(
+                                id = item.optLong("id"),
+                                name = item.optString("name"),
+                                category = item.optString("category"),
+                                description = item.optString("description"),
+                                availableQuantity = item.optInt("availableQuantity", 0),
+                                totalQuantity = item.optInt("totalQuantity", 0),
+                                location = item.optString("location"),
+                                condition = item.optString("condition"),
+                                createdAt = item.optString("createdAt")
+                            ))
+                        }
+                    }
+                    
+                    EquipmentApiResult(success, message, equipment)
+                } catch (e: Exception) {
+                    EquipmentApiResult(false, "Failed to parse equipment data", emptyList())
+                }
+            } else {
+                EquipmentApiResult(false, parseErrorMessage(body, statusCode), emptyList())
+            }
+        } catch (_: Exception) {
+            EquipmentApiResult(false, "Unable to connect to backend. Check server and network.", emptyList())
+        } finally {
+            connection?.disconnect()
+        }
+    }
+
+    fun getUserProfile(token: String): UserProfileResult {
+        var connection: HttpURLConnection? = null
+        return try {
+            connection = (URL("$authBaseUrl/profile").openConnection() as HttpURLConnection).apply {
+                requestMethod = "GET"
+                setRequestProperty("Accept", "application/json")
+                setRequestProperty("Authorization", "Bearer $token")
+                connectTimeout = 15000
+                readTimeout = 15000
+            }
+
+            val statusCode = connection.responseCode
+            val body = readResponseBody(connection, statusCode)
+
+            if (statusCode in 200..299) {
+                try {
+                    val json = JSONObject(body)
+                    val success = json.optBoolean("success", true)
+                    val message = json.optString("message", "Success")
+                    
+                    val userObj = json.optJSONObject("user")
+                    val user = if (userObj != null) {
+                        UserProfile(
+                            id = userObj.optLong("id"),
+                            name = userObj.optString("name"),
+                            email = userObj.optString("email"),
+                            role = userObj.optString("role", "USER"),
+                            profilePictureUrl = userObj.optString("profilePictureUrl"),
+                            createdAt = userObj.optString("createdAt")
+                        )
+                    } else null
+
+                    UserProfileResult(success, message, user)
+                } catch (e: Exception) {
+                    UserProfileResult(false, "Failed to parse user profile", null)
+                }
+            } else {
+                UserProfileResult(false, parseErrorMessage(body, statusCode), null)
+            }
+        } catch (_: Exception) {
+            UserProfileResult(false, "Unable to connect to backend. Check server and network.", null)
+        } finally {
+            connection?.disconnect()
+        }
+    }
+
+    fun updateUserProfile(token: String, name: String): AuthApiResult {
+        val payload = JSONObject()
+            .put("name", name)
+
+        var connection: HttpURLConnection? = null
+        return try {
+            connection = (URL("$authBaseUrl/profile").openConnection() as HttpURLConnection).apply {
+                requestMethod = "PUT"
+                setRequestProperty("Content-Type", "application/json")
+                setRequestProperty("Accept", "application/json")
+                setRequestProperty("Authorization", "Bearer $token")
+                connectTimeout = 15000
+                readTimeout = 15000
+                doOutput = true
+            }
+
+            connection.outputStream.use { output ->
+                output.write(payload.toString().toByteArray())
+                output.flush()
+            }
+
+            val statusCode = connection.responseCode
+            val body = readResponseBody(connection, statusCode)
+
+            if (statusCode in 200..299) {
+                AuthApiResult(true, "Profile updated successfully")
+            } else {
+                AuthApiResult(false, parseErrorMessage(body, statusCode))
+            }
+        } catch (_: Exception) {
+            AuthApiResult(false, "Unable to connect to backend. Check server and network.")
+        } finally {
+            connection?.disconnect()
+        }
+    }
+
+    fun logout(): AuthApiResult {
+        // Clear local authentication data
+        // Optionally call backend to invalidate token
+        return AuthApiResult(true, "Logout successful")
     }
 
     private fun postJson(url: String, payload: JSONObject): AuthApiResult {

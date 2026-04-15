@@ -102,7 +102,7 @@ class MyRequestsActivity : AppCompatActivity() {
         findViewById<View>(R.id.btnNavRequests).setOnClickListener { }
 
         findViewById<View>(R.id.btnNavProfile).setOnClickListener {
-            Toast.makeText(this, "Profile screen is coming soon", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
     }
 

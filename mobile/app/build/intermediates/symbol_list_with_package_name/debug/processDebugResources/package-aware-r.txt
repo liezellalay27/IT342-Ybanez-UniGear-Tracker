@@ -2104,6 +2104,9 @@ color switch_thumb_normal_material_light
 color tooltip_background_dark
 color tooltip_background_light
 color ug_gold
+color ug_gold_accent
+color ug_gold_dark
+color ug_gold_light
 color ug_maroon
 color ug_maroon_dark
 color ug_near_black
@@ -3007,6 +3010,7 @@ drawable btn_radio_off_mtrl
 drawable btn_radio_off_to_on_mtrl_animation
 drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
+drawable button_background
 drawable design_fab_background
 drawable design_ic_visibility
 drawable design_ic_visibility_off
@@ -3113,6 +3117,7 @@ drawable notification_template_icon_bg
 drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
+drawable profile_picture_placeholder
 drawable splash_card_bg
 drawable splash_logo_glow
 drawable status_available_bg
@@ -3221,6 +3226,10 @@ id bounce
 id bounceBoth
 id bounceEnd
 id bounceStart
+id btnAdminBorrowed
+id btnAdminEquipment
+id btnAdminRequests
+id btnAdminUsers
 id btnBackToCatalog
 id btnCatAll
 id btnCatChemicals
@@ -3228,10 +3237,13 @@ id btnCatElectronics
 id btnCatGlassware
 id btnCatMicroscopes
 id btnCatSafety
+id btnChangeProfilePicture
 id btnCreateAccount
 id btnDeleteRequest
+id btnEditName
 id btnGoogleLogin
 id btnLogin
+id btnLogout
 id btnNavCatalog
 id btnNavProfile
 id btnNavRequests
@@ -3382,6 +3394,7 @@ id inward
 id italic
 id item_touch_helper_previous_elevation
 id ivBranding
+id ivProfilePicture
 id jumpToEnd
 id jumpToStart
 id labeled
@@ -3394,6 +3407,7 @@ id line3
 id linear
 id listMode
 id list_item
+id llAdminMenu
 id llEquipmentList
 id llRequestList
 id m3_side_sheet
@@ -3656,6 +3670,12 @@ id tvLoginError
 id tvNoRequests
 id tvNoResults
 id tvPendingCount
+id tvProfileEmail
+id tvProfileInitials
+id tvProfileJoinDate
+id tvProfileLoading
+id tvProfileName
+id tvProfileRole
 id tvRegisterError
 id tvRegisterSuccess
 id tvRequestCategory
@@ -3808,6 +3828,7 @@ layout activity_equipment_detail
 layout activity_home
 layout activity_login
 layout activity_my_requests
+layout activity_profile
 layout activity_register
 layout activity_splash
 layout custom_dialog
