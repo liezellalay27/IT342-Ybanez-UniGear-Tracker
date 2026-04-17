@@ -1,12 +1,54 @@
 # UniGear Tracker
 
-UniGear Tracker is a multi-platform project for equipment borrowing and request tracking, built with:
+UniGear Tracker is a comprehensive equipment borrowing and request management system designed for universities. It streamlines the process of sharing laboratory and research equipment across departments and students.
 
-- Spring Boot backend API
-- React web app
+## System Overview
+
+**UniGear Tracker** enables:
+
+- **Students**: Browse available equipment, submit borrowing requests with date ranges, upload event approval documents, and track request status
+- **Administrators**: Manage equipment inventory, approve/reject requests, track active loans, mark returns as on-time/late, and generate reports
+- **Real-time Availability**: Equipment availability calendar shows which dates equipment is already booked
+- **Multi-platform Access**: Use web app on desktop or mobile app on Android devices
+- **Secure Authentication**: Email/password login and Google OAuth2 integration
+
+## Key Features
+
+✅ **Equipment Management**
+- Browse and search equipment by name and category
+- View detailed specifications, location, and real-time availability
+- High-quality equipment images from Unsplash API
+
+✅ **Request Management**
+- Create borrowing requests with date range selection
+- Upload event approval PDFs
+- Track request status (Pending → Approved/Rejected → Completed)
+
+✅ **Admin Dashboard**
+- Overview: KPI cards for pending requests, active loans, low stock
+- Equipment: Manage inventory and quantities
+- Users: View all users and their roles
+- Borrowed: Track active loans and process returns
+- Requests: Review and approve/reject requests
+
+✅ **Multi-Platform**
+- Web app (React 18) with responsive design
 - Android mobile app (Kotlin)
+- Backend API (Spring Boot)
 
-This README reflects the current implementation status in this repository.
+---
+
+## Technology Stack
+
+UniGear Tracker is a multi-platform project built with:
+
+- **Backend**: Spring Boot 3.4.x Java API
+- **Frontend**: React 18 web application
+- **Mobile**: Android app (Kotlin)
+- **Database**: PostgreSQL via Supabase
+- **APIs**: Google OAuth2, Unsplash for images
+
+This README reflects the current Phase 3 implementation status in this repository.
 
 ## Current Progress
 
